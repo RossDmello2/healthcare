@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Appointment</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h2>Book a Doctor Appointment</h2>
+    
+    <form action="{{ url_for('book_appointment') }}" method="post">
+        <label for="doctor_id">Select Doctor:</label>
+        <select name="doctor_id" id="doctor_id" required>
+            {% for doctor in doctors %}
+                <option value="{{ doctor.id }}">{{ doctor.name }} ({{ doctor.specialty }} - {{ doctor.location }})</option>
+            {% endfor %}
+        </select>
+        
+        <label for="patient_name">Patient Name:</label>
+        <input type="text" id="patient_name" name="patient_name" required>
+        
+        <label for="appointment_date">Date:</label>
+        <input type="date" id="appointment_date" name="appointment_date" min="{{ today }}" required>
+        
+        <button type="submit">Book Appointment</button>
+    </form>
+    
+    <h3>Available Doctors</h3>
+    <ul>
+        {% for doctor in doctors %}
+            <li>
+                <strong>{{ doctor.name }}</strong> - {{ doctor.specialty }} ({{ doctor.location }})
+                <form method="POST" action="{{ url_for('book_appointment') }}">
+                    <input type="hidden" name="doctor_id" value="{{ doctor.id }}">
+                    
+                    <label for="patient_name_{{ doctor.id }}">Your Name:</label>
+                    <input type="text" id="patient_name_{{ doctor.id }}" name="patient_name" required>
+                    
+                    <label for="appointment_date_{{ doctor.id }}">Date:</label>
+                    <input type="date" id="appointment_date_{{ doctor.id }}" name="appointment_date" min="{{ today }}" required>
+                    
+                    <button type="submit">Book Appointment</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+

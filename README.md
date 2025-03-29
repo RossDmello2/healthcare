@@ -1,1 +1,1 @@
-# healthcare
+# Disease Prediction System
